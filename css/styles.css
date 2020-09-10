@@ -1,0 +1,18 @@
+html, body {
+  height: 100%;
+  margin: 0;
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
+
+.container {
+  display: flex;
+  height: 100%;
+  background-color: #ffffdd; /*yellow*/
+}
+
+.map {
+  background-color: #a0ffe6; /*blue*/
+  flex: 1;
+  height: 100%;
+  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+}
