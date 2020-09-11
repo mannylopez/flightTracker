@@ -16,3 +16,12 @@ html, body {
   height: 100%;
   font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
 }
+
+.plane {
+  background-image: url('../img/airport-15.svg');
+  width: 15px;
+  height: 15px;
+  border-radius: 50%;
+  cursor: pointer;
+  fill: #ffffdd;
+}

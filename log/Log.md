@@ -1,10 +1,10 @@
-### September 10, 2020
-#### Goals
+# September 10, 2020
+## Goals
 - [x] Create an array of objects by combining the keys and values from [Opensky network REST response](https://opensky-network.org/api/states/all?lamin=30.038&lomin=-125.974&lamax=52.214&lomax=-68.748)
 - [x] Place markers on map for each airplane
 
-#### Log
-##### :white_check_mark: Create an array of objects by combining the keys and values from [Opensky network REST response](https://opensky-network.org/api/states/all?lamin=30.038&lomin=-125.974&lamax=52.214&lomax=-68.748)
+### Log
+#### :white_check_mark: Create an array of objects by combining the keys and values from [Opensky network REST response](https://opensky-network.org/api/states/all?lamin=30.038&lomin=-125.974&lamax=52.214&lomax=-68.748)
 Right now, the the flight data comes in through the `states` array in the response. I need to couple that the array of keys:
 
 ```js
@@ -116,7 +116,7 @@ Result:
 ```
 Success! :tada:
 
-##### :white_check_mark: Place markers on map for each airplane
+#### :white_check_mark: Place markers on map for each airplane
 I can now take the array of objects and iterate over each array and add a marker to the map
 ```javascript
 // Add a marker for each flight

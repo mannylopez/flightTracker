@@ -4,7 +4,7 @@ let map = new mapboxgl.Map({
   container: 'map', // container id
   style: 'mapbox://styles/mapbox/streets-v11', // stylesheet location
   center: [-113.620, 36.711], // starting position [lng, lat]
-  zoom: 5 // starting zoom
+  zoom: 4 // starting zoom
 });
 
 let lon_min = -125.859;
@@ -32,10 +32,24 @@ axios.get(url)
     console.log(flightsArray);
     console.log(flightsArray[0]);
 
+
+
+
     // Add a marker for each flight
     for (let flight of flightsArray) {
-      let marker = new mapboxgl.Marker()
+      let el = document.createElement('div');
+      el.className = 'plane';
+      let marker = new mapboxgl.Marker(el)
         .setLngLat([flight.long, flight.lat])
+        .setRotation(flight.true_track)
+        .setPopup(new mapboxgl.Popup().setHTML(`Callsign: ${flight.callsign} </br> Lat/lon ${flight.long}, ${flight.lat}`))
         .addTo(map);
       }
   })
+
+// let el = document.createElement('div');
+// el.className = 'plane';
+// // el.style.backgroundImage = './img/icons/airport-15.svg'
+// let marker = new mapboxgl.Marker(el)
+//   .setLngLat([-122.658722, 45.512230])
+//   .addTo(map);
