@@ -11,6 +11,9 @@ Got the idea from the Geodose [Build Your Own Flight Tracking Application with P
 - [bboxfinder.com](http://bboxfinder.com/#0.000000,0.000000,0.000000,0.000000)
 - [A Guide to Solving Those Mystifying CORS Issues](https://blog.container-solutions.com/a-guide-to-solving-those-mystifying-cors-issues)
 - [Where we're going, we don't need servers](https://oliverjam.es/blog/we-dont-need-servers/) on how to use Netlify and deploy a simple backend.
+- [How do you convert normal geographic json coming from server into geoJson?](https://stackoverflow.com/questions/55496909/how-do-you-convert-normal-geographic-json-coming-from-server-into-geojson)
+- [GeoJSON](https://en.wikipedia.org/wiki/GeoJSON) Wikipedia page
+- [Geometric vs. Barometric Altitude](http://flysight.ca/wiki/index.php/Geometric_vs._Barometric_Altitude)
 
 
 ## To do
