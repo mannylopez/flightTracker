@@ -18,10 +18,9 @@ html, body {
 }
 
 .plane {
-  background-image: url('../img/airport-15.svg');
+  background-image: url('../img/plane.svg');
   width: 15px;
   height: 15px;
   border-radius: 50%;
   cursor: pointer;
-  fill: #ffffdd;
 }

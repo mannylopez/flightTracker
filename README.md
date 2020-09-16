@@ -7,6 +7,10 @@ Got the idea from the Geodose [Build Your Own Flight Tracking Application with P
 - [OpenSky Network](https://opensky-network.org/): Open air traffic data
 - [OpenSky REST API docs](https://opensky-network.org/apidoc/rest.html)
 - [How to make HTTP requests like a pro with Axios](https://blog.logrocket.com/how-to-make-http-requests-like-a-pro-with-axios/)
+- [HTTP requests using Axios](https://flaviocopes.com/axios/)
+- [bboxfinder.com](http://bboxfinder.com/#0.000000,0.000000,0.000000,0.000000)
+- [A Guide to Solving Those Mystifying CORS Issues](https://blog.container-solutions.com/a-guide-to-solving-those-mystifying-cors-issues)
+- [Where we're going, we don't need servers](https://oliverjam.es/blog/we-dont-need-servers/) on how to use Netlify and deploy a simple backend.
 
 
 ## To do
@@ -15,7 +19,13 @@ Got the idea from the Geodose [Build Your Own Flight Tracking Application with P
 - [x] Add plane marker with plane facing direction of travel
 - [x] Add flight card with flight info when airplane is clicked
 - [ ] Add plane trajectory
-- [ ] Refresh page automatically
+- [ ] Refresh flights automatically
+- [ ] Add OpenSky attribution to page
+- [ ] Design and add flight card with metadata
+
+## Ideas
+- Flight info page
+- All flights out of/going to an airport
 
 
 ### Log
@@ -29,4 +39,17 @@ Got the idea from the Geodose [Build Your Own Flight Tracking Application with P
 
 1. Add plane marker with plane facing direction of travel
 2. Add flight card with flight info when airplane is clicked
+3. Notes:
+    - The `/tracks` endpoint does not seem to be working
+    - Found `/routes` and `/airports` endpoints by inspecting the network calls made in OpenSky Explorer](https://opensky-network.org/network/explorer)
+
 ![Flight markers](./img/2020.09.11-flight-markers.png)
+
+#### September 13, 2020
+Blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present. The endpoints are not publicly available. Dang. Learnt more about CORS and why I can get results from those endpoints using Postman and my terminal, but not when using the browser.
+
+#### September 14, 2020
+Explored OpenSky's `/aircraft` endpoint and figured out that it does not return current flights. It returns data for flights that have started _and ended_. I need to find another API to get the current departure and arrival airport for any given flight.
+
+#### September 15, 2020
+I'm going to pause trying to get realtime data for a flight in progress. The API I found, aviationstack](https://aviationstack.com/), provides a free tier for personal projects, but I would be exposing my private API key since my app is all frontend. I need to learn about servers and making the call in the backend. I'll come back to this.

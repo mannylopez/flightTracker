@@ -1,101 +1,71 @@
-let obj = {
-  "time": 1599796980,
-  "states": [
-    [
-      "aa56d8",
-      "UAL2157 ",
-      "United States",
-      1599796979,
-      1599796979,
-      -117.7826,
-      33.8106,
-      1173.48,
-      false,
-      108.59,
-      213.01,
-      -5.53,
-      null,
-      1219.2,
-      "2627",
-      false,
-      0
-    ],
-    [
-      "a3f2ae",
-      "N35325  ",
-      "United States",
-      1599796979,
-      1599796979,
-      -111.9828,
-      33.4935,
-      1493.52,
-      false,
-      56.19,
-      176.33,
-      0,
-      null,
-      1554.48,
-      "4376",
-      false,
-      0
-    ],
-    [
-      "a7b07c",
-      "FDX1314 ",
-      "United States",
-      1599796979,
-      1599796979,
-      -79.0717,
-      39.2826,
-      11582.4,
-      false,
-      242.21,
-      245.67,
-      0,
-      null,
-      12283.44,
-      "6037",
-      false,
-      0
-    ],
-    [
-      "ac4963",
-      "DAL869  ",
-      "United States",
-      1599796980,
-      1599796980,
-      -96.8121,
-      44.3693,
-      11887.2,
-      false,
-      257.23,
-      77.41,
-      0,
-      null,
-      12435.84,
-      "6013",
-      false,
-      0
-    ]
-  ]
-}
+const axios = require('axios');
 
-let keys = ['icao24','callsign','origin_country','time_position','last_contact','long','lat','baro_altitude','on_ground','velocity','true_track','vertical_rate','sensors','geo_altitude','squawk','spi','position_source'];
+// const callsign = 'SWA2251';
+// const airportCode = 'KMDW';
 
-let values = obj.states;
-let finalArray = [];
-for (let y = 0; y < values.length; y++) {
-  let array = values[y];
-  let obj = {};
-  for (let x = 0; x < array.length; x++) {
-    obj[keys[x]] = array[x];
+// const getAirportData = async () => {
+//   try {
+//     return await axios.get(`https://opensky-network.org/api/routes?callsign=GTI3710`)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
+
+// const getAirportName = async () => {
+//   const airportData = await getAirportData()
+
+//   console.log(airportData.data);
+
+// }
+
+// // getAirportName();
+
+
+
+// const [lon_min, lat_min, lon_max, lat_max] = [-91.617737,36.903646,-87.245178,42.591384]
+
+// const url = `https://opensky-network.org/api/states/all?lamin=${lat_min}&lomin=${lon_min}&lamax=${lat_max}&lomax=${lon_max}`;
+
+
+async function getAllFlightVectors() {
+  try {
+    let allFlightVectors = await axios.get(url)
+    console.log(allFlightVectors.data);
+  } catch (error) {
+    console.log(error)
   }
-  finalArray.push(obj)
-
 }
-console.log(finalArray);
-console.log("Fini");
 
 
+// getAllFlightVectors();
+
+let milliseconds = Date.now()
+let end = Math.floor((milliseconds) / 1000)
+let start = end - (86400);
+
+console.log("start", start);
+console.log("end", end);
 
 
+async function getAircraftRequest() {
+  let icao24 = "a3500f";
+
+  try {
+    let result = await axios.get(`https://opensky-network.org/api/flights/aircraft?icao24=${icao24}&begin=${start}&end=${end}`)
+    console.log(result.data);
+  } catch (error){
+    console.log(error);
+  }
+}
+
+
+// getAircraftRequest();
+
+function convertFromEpoch(note, time) {
+  let milli = time * 1000;
+  let timeObject = new Date(milli);
+  console.log(note, timeObject);
+}
+
+convertFromEpoch("start", start)
+convertFromEpoch("end", end)
