@@ -220,7 +220,138 @@ console.log(JSON.stringify(geojson));
 createGeoJSON();
 
 
+// Test data
 
+let testGeoJSON = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "icao24": "acdc05",
+      "type": "Feature",
+      "properties": {
+        "icao24": "acdc05",
+        "callsign": "N928BK  ",
+        "origin_country": "United States",
+        "time_position": 1600236399,
+        "last_contact": 1600236399,
+        "baro_altitude": 7627.62,
+        "on_ground": false,
+        "velocity": 210.79,
+        "true_track": 259.6,
+        "vertical_rate": 10.73,
+        "sensors": null,
+        "geo_altitude": 7978.14,
+        "squawk": null,
+        "spi": false,
+        "position_source": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.9956,
+          32.9343
+        ]
+      }
+    },
+    {
+      "icao24": "ac9f51",
+      "type": "Feature",
+      "properties": {
+        "icao24": "ac9f51",
+        "callsign": "N912NM  ",
+        "origin_country": "United States",
+        "time_position": 1600236399,
+        "last_contact": 1600236399,
+        "baro_altitude": 5090.16,
+        "on_ground": false,
+        "velocity": 132.25,
+        "true_track": 141.79,
+        "vertical_rate": 0,
+        "sensors": null,
+        "geo_altitude": 5410.2,
+        "squawk": null,
+        "spi": false,
+        "position_source": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -107.4055,
+          35.8725
+        ]
+      }
+    },
+    {
+      "icao24": "a4f5c7",
+      "type": "Feature",
+      "properties": {
+        "icao24": "a4f5c7",
+        "callsign": "N419CF  ",
+        "origin_country": "United States",
+        "time_position": 1600236371,
+        "last_contact": 1600236375,
+        "baro_altitude": 502.92,
+        "on_ground": false,
+        "velocity": 67.91,
+        "true_track": 180.43,
+        "vertical_rate": 0,
+        "sensors": null,
+        "geo_altitude": 533.4,
+        "squawk": null,
+        "spi": false,
+        "position_source": 0
+      },
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -97.3334,
+          32.4355
+        ]
+      }
+    }
+  ]
+}
+
+const center = [ -99.610376,31.295971 ];
+// const elevation = 571.5 * 100;
+const polygonRadius = 0.02;
+
+let testPolygon = {
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {},
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [
+              center[0] - polygonRadius,
+              center[1] - polygonRadius
+            ],
+            [
+              center[0] + polygonRadius,
+              center[1] - polygonRadius
+            ],
+            [
+              center[0] + polygonRadius,
+              center[1] + polygonRadius
+            ],
+            [
+              center[0] - polygonRadius,
+              center[1] + polygonRadius
+            ],
+            [
+              center[0] - polygonRadius,
+              center[1] - polygonRadius
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
 
 
 

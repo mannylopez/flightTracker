@@ -3,14 +3,14 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWFubnkiLCJhIjoiY2tld2Qxa3hsMDMxaDJxbDZha3k1d
 let map = new mapboxgl.Map({
   container: 'map', // container id
   style: 'mapbox://styles/mapbox/dark-v8', // stylesheet location
-  center: [-100.198231,31.276717], // starting position [lng, lat]
-  pitch: 40, // pitch in degrees
-  zoom: 5.5 // starting zoom
+  center: [-99.610376,31.295971], // starting position [lng, lat]
+  pitch: 60, // pitch in degrees
+  zoom: 5.4 // starting zoom
 });
 
 // Get flight vectors
 // Returns an array of values
-const [lon_min, lat_min, lon_max, lat_max] = [-129.664764,24.300482,-58.824921,51.298637]
+const [lon_min, lat_min, lon_max, lat_max] = [-128.885422,24.173693,-65.428391,51.046143]
 
 const url = `https://opensky-network.org/api/states/all?lamin=${lat_min}&lomin=${lon_min}&lamax=${lat_max}&lomax=${lon_max}`;
 
@@ -23,6 +23,16 @@ async function getAllFlightVectors() {
   }
 }
 
+// icao24: 0,
+// callsign: 1,
+// long: 5,
+// lat: 6,
+// velocity: 9,
+// true_track: 10,
+// geo_altitude: 13
+
+let staticArray = [];
+
 // Gives keys to values
 // Returns an array of objects
 async function createFlightVectorsArray() {
@@ -31,6 +41,7 @@ async function createFlightVectorsArray() {
   // Create an object by combining keys (hardcoded in keys array below) and values (from the API response) and push them into the flightsArray
   let flightsArray = [];
   let keys = ['icao24','callsign','origin_country','time_position','last_contact','long','lat','baro_altitude','on_ground','velocity','true_track','vertical_rate','sensors','geo_altitude','squawk','spi','position_source'];
+
   let values = allFlightVectors.data.states;
 
   for (let y = 0; y < values.length; y++) {
@@ -42,102 +53,12 @@ async function createFlightVectorsArray() {
     flightsArray.push(obj)
   }
   // console.log(flightsArray);
-  // console.log(flightsArray[0]);
+  console.log(flightsArray[0]);
+  staticArray = flightsArray;
   return flightsArray;
 }
 
-
-let testGeoJSON = {
-  "type": "FeatureCollection",
-  "features": [
-    {
-      "icao24": "acdc05",
-      "type": "Feature",
-      "properties": {
-        "icao24": "acdc05",
-        "callsign": "N928BK  ",
-        "origin_country": "United States",
-        "time_position": 1600236399,
-        "last_contact": 1600236399,
-        "baro_altitude": 7627.62,
-        "on_ground": false,
-        "velocity": 210.79,
-        "true_track": 259.6,
-        "vertical_rate": 10.73,
-        "sensors": null,
-        "geo_altitude": 7978.14,
-        "squawk": null,
-        "spi": false,
-        "position_source": 0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -97.9956,
-          32.9343
-        ]
-      }
-    },
-    {
-      "icao24": "ac9f51",
-      "type": "Feature",
-      "properties": {
-        "icao24": "ac9f51",
-        "callsign": "N912NM  ",
-        "origin_country": "United States",
-        "time_position": 1600236399,
-        "last_contact": 1600236399,
-        "baro_altitude": 5090.16,
-        "on_ground": false,
-        "velocity": 132.25,
-        "true_track": 141.79,
-        "vertical_rate": 0,
-        "sensors": null,
-        "geo_altitude": 5410.2,
-        "squawk": null,
-        "spi": false,
-        "position_source": 0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -107.4055,
-          35.8725
-        ]
-      }
-    },
-    {
-      "icao24": "a4f5c7",
-      "type": "Feature",
-      "properties": {
-        "icao24": "a4f5c7",
-        "callsign": "N419CF  ",
-        "origin_country": "United States",
-        "time_position": 1600236371,
-        "last_contact": 1600236375,
-        "baro_altitude": 502.92,
-        "on_ground": false,
-        "velocity": 67.91,
-        "true_track": 180.43,
-        "vertical_rate": 0,
-        "sensors": null,
-        "geo_altitude": 533.4,
-        "squawk": null,
-        "spi": false,
-        "position_source": 0
-      },
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -97.3334,
-          32.4355
-        ]
-      }
-    }
-  ]
-}
-
-async function createGeoJSON() {
+async function createPointGeoJSON() {
   const flightVectorsArray = await createFlightVectorsArray();
 
   const geojson = {
@@ -149,19 +70,9 @@ async function createGeoJSON() {
         properties: {
           icao24: item.icao24,
           callsign: item.callsign,
-          origin_country: item.origin_country,
-          time_position: item.time_position,
-          last_contact: item.last_contact,
-          baro_altitude: item.baro_altitude,
-          on_ground: item.on_ground,
           velocity: item.velocity,
           true_track: item.true_track,
-          vertical_rate: item.vertical_rate,
-          sensors: item.sensors,
-          geo_altitude: item.geo_altitude,
-          squawk: item.squawk,
-          spi: item.spi,
-          position_source: item.position_source
+          geo_altitude: item.geo_altitude
         },
         geometry: {
           type: "Point",
@@ -177,34 +88,131 @@ console.log(geojson);
 return geojson;
 }
 
-// createGeoJSON();
+async function createPolygonGeoJSON() {
+  const polygonRadius = 0.02;
+  const flightVectorsArray = staticArray;
+
+  const geojson = {
+    type: "FeatureCollection",
+    features: flightVectorsArray.map(item => {
+      return {
+        icao24: item.icao24,
+        type: "Feature",
+        properties: {
+          icao24: item.icao24,
+          callsign: item.callsign,
+          velocity: item.velocity,
+          true_track: item.true_track,
+          geo_altitude: item.geo_altitude * 10
+        },
+        geometry: {
+          type: "Polygon",
+          coordinates: [
+            [
+              [
+                item.long - polygonRadius,
+                item.lat - polygonRadius
+              ],
+              [
+                item.long + polygonRadius,
+                item.lat - polygonRadius
+              ],
+              [
+                item.long + polygonRadius,
+                item.lat + polygonRadius
+              ],
+              [
+                item.long - polygonRadius,
+                item.lat + polygonRadius
+              ],
+              [
+                item.long - polygonRadius,
+                item.lat - polygonRadius
+              ]
+            ]
+          ]
+        }
+      };
+    })
+  };
+
+// console.log(geojson);
+// console.log(JSON.stringify(geojson));
+
+return geojson;
+}
+
+
 
 async function addMapLayer(){
-  let flightGeoJSON = await createGeoJSON();
+  let pointGeoJSON = await createPointGeoJSON();
+  console.log(pointGeoJSON);
+  let polygonGeoJSON = await createPolygonGeoJSON();
+  console.log(polygonGeoJSON);
 
   map.on('load', function() {
-    map.addSource('points', {
-      'type': 'geojson',
-      'data': flightGeoJSON
-    })
+    // map.addSource('points', {
+    //   'type': 'geojson',
+    //   'data': pointGeoJSON
+    // })
+
+    // map.addSource('altitudes', {
+    //   'type': 'geojson',
+    //   'data': polygonGeoJSON
+    // })
 
     map.addLayer({
       'id': 'points',
-      'type': 'circle',
-      'source': 'points',
-      'paint': {
-        'circle-radius': 6,
-        'circle-color': '#B42222'
+      'type': 'symbol',
+      'source': {
+        'type': 'geojson',
+        'data': pointGeoJSON
+      },
+      'layout': {
+        'icon-image': 'airport-15',
+        // 'icon-color': '#f5b7b1',
+        'icon-rotate': ['get', 'true_track'],
+        'icon-allow-overlap': true
       }
     })
+
+
+    map.addLayer({
+      'id': 'extrusion',
+      'type': 'fill-extrusion',
+      'source': {
+        'type': 'geojson',
+        'data': polygonGeoJSON
+      },
+      'paint': {
+        'fill-extrusion-color': '#78d2f7',
+        'fill-extrusion-height': ['get', 'geo_altitude'],
+        'fill-extrusion-base': 0,
+        'fill-extrusion-opacity': 0.8
+      }
+    })
+
+    map.setLayoutProperty('extrusion', 'visibility', 'none')
+
   })
 }
 
 
 addMapLayer();
 
+document.getElementById('altitude').addEventListener('click', () => {
+  console.log('clicked altitude');
+  map.setLayoutProperty('extrusion', 'visibility', 'visible')
+  map.setLayoutProperty('points', 'visibility', 'none')
+})
 
 
+document.getElementById('points').addEventListener('click', () => {
+  console.log('clicked points');
+  map.setLayoutProperty('extrusion', 'visibility', 'none')
+  map.setLayoutProperty('points', 'visibility', 'visible')
+
+})
 
 
 
