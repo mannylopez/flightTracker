@@ -56,3 +56,8 @@ Explored OpenSky's `/aircraft` endpoint and figured out that it does not return 
 
 #### September 15, 2020
 I'm going to pause trying to get realtime data for a flight in progress. The API I found, aviationstack](https://aviationstack.com/), provides a free tier for personal projects, but I would be exposing my private API key since my app is all frontend. I need to learn about servers and making the call in the backend. I'll come back to this.
+
+#### September 17, 2020
+Pivot. The map now shows 3D points representing the altitude of the plane. The layers are all generated from the GeoJSON file I create on the fly after receiving the data from the API call.
+
+![2020.09.16-altitude](./img/2020.09.16-altitude.png)
