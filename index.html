@@ -2,30 +2,21 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Flight tracker</title>
+  <title>Flight Elevation 3D</title>
   <meta name="viewport" content="initial-scale=1,maximum-scale=1,user-scalable=no" />
-
   <!-- Axios JS file -->
   <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
-  <!-- Mapbox JS files -->
+  <!-- Mapbox JS and CSS files -->
   <script src="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.js"></script>
-
-  <!-- Mapox and directory CSS files -->
   <link href="https://api.mapbox.com/mapbox-gl-js/v1.11.0/mapbox-gl.css" rel="stylesheet" />
   <link rel="stylesheet" type="text/css" href="css/styles.css">
-
 </head>
 <body>
-  <div class="container">
-    <!-- Map pane -->
-    <div class="map" id="map"></div>
-    <br>
-    <button id="altitude">Display altitude</button>
-    <button id="points">Display points</button>
-  </div>
-
+  <!-- Map pane -->
+  <div class="map" id="map"></div>
+  <button id="altitude">Altitude</button>
+  <button id="points">Points</button>
   <!-- Wait till the layout loads and then run the directory JS files -->
   <script type='text/javascript' src='js/scripts.js'></script>
-
 </body>
 </html>

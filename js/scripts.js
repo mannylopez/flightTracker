@@ -3,7 +3,7 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWFubnkiLCJhIjoiY2tld2Qxa3hsMDMxaDJxbDZha3k1d
 let map = new mapboxgl.Map({
   container: 'map', // container id
   style: 'mapbox://styles/mapbox/dark-v8', // stylesheet location
-  center: [-97.40984744,35.09420707], // starting position [lng, lat]
+  center: [-119.582723,37.7184766], // starting position [lng, lat]
   // pitch: 43, // pitch in degrees
   zoom: 3.8 // starting zoom
 });
@@ -188,7 +188,15 @@ async function addMapLayer(){
         .setLngLat(coordinates)
         .setHTML(description)
         .addTo(map);
-    })
+    });
+
+    map.on('mouseenter', 'points', () => {
+      map.getCanvas().style.cursor = 'pointer';
+    });
+
+    map.on('mouseleave', 'points', () => {
+      map.getCanvas().style.cursor = '';
+    });
   })
 }
 

@@ -1,26 +1,41 @@
-html, body {
-  height: 100%;
-  margin: 0;
-  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
+<style>
+  body {
+    margin: 0;
+    padding: 0;
+  }
+  #map {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    width: 100%;
+  }
+  #altitude {
+    position: absolute;
+    bottom: 2%;
+    right: 52%;
+    width: 25%;
+    height: 40px;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 15px;
+    text-align: center;
+    color: #000000;
+    background: #aed6f1;
+  }
 
-.container {
-  display: flex;
-  height: 100%;
-  background-color: #ffffdd; /*yellow*/
-}
-
-.map {
-  background-color: #a0ffe6; /*blue*/
-  flex: 1;
-  height: 100%;
-  font: 15px/1.5 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-}
-
-.plane {
-  background-image: url('../img/plane.svg');
-  width: 15px;
-  height: 15px;
-  border-radius: 50%;
-  cursor: pointer;
-}
+  #points {
+    position: absolute;
+    bottom: 2%;
+    left: 52%;
+    width: 25%;
+    height: 40px;
+    padding: 10px;
+    border: none;
+    border-radius: 3px;
+    font-size: 15px;
+    text-align: center;
+    color: #000000;
+    background: #ffd5e5;
+  }
+</style>
