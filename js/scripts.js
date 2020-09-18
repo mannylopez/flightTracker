@@ -3,18 +3,18 @@ mapboxgl.accessToken = 'pk.eyJ1IjoibWFubnkiLCJhIjoiY2tld2Qxa3hsMDMxaDJxbDZha3k1d
 let map = new mapboxgl.Map({
   container: 'map', // container id
   style: 'mapbox://styles/mapbox/dark-v8', // stylesheet location
-  center: [-99.610376,31.295971], // starting position [lng, lat]
-  pitch: 60, // pitch in degrees
-  zoom: 5.4 // starting zoom
+  center: [-97.40984744,35.09420707], // starting position [lng, lat]
+  // pitch: 43, // pitch in degrees
+  zoom: 3.8 // starting zoom
 });
+
+// const [lon_min, lat_min, lon_max, lat_max] = [-128.885422,24.173693,-65.428391,51.046143]
+// const url = `https://opensky-network.org/api/states/all?lamin=${lat_min}&lomin=${lon_min}&lamax=${lat_max}&lomax=${lon_max}`;
+
+const url = `https://opensky-network.org/api/states/all`;
 
 // Get flight vectors
 // Returns an array of values
-const [lon_min, lat_min, lon_max, lat_max] = [-128.885422,24.173693,-65.428391,51.046143]
-
-const url = `https://opensky-network.org/api/states/all?lamin=${lat_min}&lomin=${lon_min}&lamax=${lat_max}&lomax=${lon_max}`;
-
-
 async function getAllFlightVectors() {
   try {
     return await axios.get(url)
@@ -22,14 +22,6 @@ async function getAllFlightVectors() {
     console.log(error)
   }
 }
-
-// icao24: 0,
-// callsign: 1,
-// long: 5,
-// lat: 6,
-// velocity: 9,
-// true_track: 10,
-// geo_altitude: 13
 
 let staticArray = [];
 
@@ -52,8 +44,7 @@ async function createFlightVectorsArray() {
     }
     flightsArray.push(obj)
   }
-  // console.log(flightsArray);
-  console.log(flightsArray[0]);
+
   staticArray = flightsArray;
   return flightsArray;
 }
@@ -65,7 +56,7 @@ async function createPointGeoJSON() {
     type: "FeatureCollection",
     features: flightVectorsArray.map(item => {
       return {
-        icao24: item.icao24,
+        id: item.icao24,
         type: "Feature",
         properties: {
           icao24: item.icao24,
@@ -82,21 +73,17 @@ async function createPointGeoJSON() {
     })
   };
 
-console.log(geojson);
-// console.log(JSON.stringify(geojson));
-
-return geojson;
+  return geojson;
 }
 
 async function createPolygonGeoJSON() {
   const polygonRadius = 0.02;
-  const flightVectorsArray = staticArray;
 
   const geojson = {
     type: "FeatureCollection",
-    features: flightVectorsArray.map(item => {
+    features: staticArray.map(item => {
       return {
-        icao24: item.icao24,
+        id: item.icao24,
         type: "Feature",
         properties: {
           icao24: item.icao24,
@@ -136,30 +123,16 @@ async function createPolygonGeoJSON() {
     })
   };
 
-// console.log(geojson);
-// console.log(JSON.stringify(geojson));
-
-return geojson;
+  return geojson;
 }
 
 
 
 async function addMapLayer(){
-  let pointGeoJSON = await createPointGeoJSON();
-  console.log(pointGeoJSON);
-  let polygonGeoJSON = await createPolygonGeoJSON();
-  console.log(polygonGeoJSON);
+  await map.on('load', async function() {
 
-  map.on('load', function() {
-    // map.addSource('points', {
-    //   'type': 'geojson',
-    //   'data': pointGeoJSON
-    // })
-
-    // map.addSource('altitudes', {
-    //   'type': 'geojson',
-    //   'data': polygonGeoJSON
-    // })
+    let pointGeoJSON = await createPointGeoJSON();
+    let polygonGeoJSON = await createPolygonGeoJSON();
 
     map.addLayer({
       'id': 'points',
@@ -170,7 +143,6 @@ async function addMapLayer(){
       },
       'layout': {
         'icon-image': 'airport-15',
-        // 'icon-color': '#f5b7b1',
         'icon-rotate': ['get', 'true_track'],
         'icon-allow-overlap': true
       }
@@ -194,27 +166,45 @@ async function addMapLayer(){
 
     map.setLayoutProperty('extrusion', 'visibility', 'none')
 
+    map.on('click', 'points', function(e) {
+      let coordinates = e.features[0].geometry.coordinates.slice();
+
+      let description = `<b>Flight ${e.features[0].properties.callsign}</b>
+        </br>
+        Velocity: ${Math.round(e.features[0].properties.velocity * 2.2369363)} mph
+        </br>
+        Altitude: ${Math.round(e.features[0].properties.geo_altitude)} meters
+        </br>
+        <a href="https://flightaware.com/live/flight/${e.features[0].properties.callsign}" target="_blank">View flight path on FlightAware</a>`
+
+      // Ensure that if the map is zoomed out such that multiple
+      // copies of the feature are visible, the popup appears
+      // over the copy being pointed to.
+      while (Math.abs(e.lngLat.lng - coordinates[0]) > 180) {
+        coordinates[0] += e.lngLat.lng > coordinates[0] ? 360 : -360;
+      }
+
+      new mapboxgl.Popup({closeButton: false})
+        .setLngLat(coordinates)
+        .setHTML(description)
+        .addTo(map);
+    })
   })
 }
 
-
-addMapLayer();
-
 document.getElementById('altitude').addEventListener('click', () => {
-  console.log('clicked altitude');
   map.setLayoutProperty('extrusion', 'visibility', 'visible')
-  map.setLayoutProperty('points', 'visibility', 'none')
+    .setLayoutProperty('points', 'visibility', 'none')
+    .setPitch(43);
 })
-
 
 document.getElementById('points').addEventListener('click', () => {
-  console.log('clicked points');
   map.setLayoutProperty('extrusion', 'visibility', 'none')
-  map.setLayoutProperty('points', 'visibility', 'visible')
-
+    .setLayoutProperty('points', 'visibility', 'visible')
+    .setPitch(0);
 })
 
-
+addMapLayer();
 
 
 
