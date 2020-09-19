@@ -1,7 +1,14 @@
 # Flight Tracker
 *Started September 09, 2020*
 
-Got the idea from the Geodose [Build Your Own Flight Tracking Application with Python and Open Air Traffic Data](https://www.geodose.com/2020/08/create-flight-tracking-apps-using-python-open-data.html) post I came across. The tutorial is built using Python, and I'm going to try to do it in JavaScript.
+*Published September 18, 2020*
+
+https://mannylopez.github.io/flightTracker/
+
+## 3D altitude map for current flights anywhere in the world
+![2020.09.18-altitude](./img/2020.09.18-altitude.png)
+
+Got the idea to build a real-time flight tracker from Geodose's [Build Your Own Flight Tracking Application with Python and Open Air Traffic Data](https://www.geodose.com/2020/08/create-flight-tracking-apps-using-python-open-data.html) post. The tutorial is built using Python, and I'm going to try to do it in JavaScript.
 
 ## Resources
 - [OpenSky Network](https://opensky-network.org/): Open air traffic data
@@ -25,11 +32,6 @@ Got the idea from the Geodose [Build Your Own Flight Tracking Application with P
 - [ ] Refresh flights automatically
 - [ ] Add OpenSky attribution to page
 - [ ] Design and add flight card with metadata
-
-## Ideas
-- Flight info page
-- All flights out of/going to an airport
-
 
 ### Log
 #### September 10, 2020
@@ -55,9 +57,22 @@ Blocked by CORS policy: No 'Access-Control-Allow-Origin' header is present. The 
 Explored OpenSky's `/aircraft` endpoint and figured out that it does not return current flights. It returns data for flights that have started _and ended_. I need to find another API to get the current departure and arrival airport for any given flight.
 
 #### September 15, 2020
-I'm going to pause trying to get realtime data for a flight in progress. The API I found, aviationstack](https://aviationstack.com/), provides a free tier for personal projects, but I would be exposing my private API key since my app is all frontend. I need to learn about servers and making the call in the backend. I'll come back to this.
+I'm going to pause trying to get realtime data for a flight in progress. The API I found, [aviationstack](https://aviationstack.com/), provides a free tier for personal projects, but I would be exposing my private API key since my app is all frontend. I need to learn about servers and making the call in the backend. I'll come back to this once I learn how to work with servers.
 
 #### September 17, 2020
-Pivot. The map now shows 3D points representing the altitude of the plane. The layers are all generated from the GeoJSON file I create on the fly after receiving the data from the API call.
+Pivot! Since I can't get departure and arrival information for free, I'm going to work with the data I do have.
+
+The map now shows 3D points representing the altitude of the plane. The layers are all generated from the GeoJSON file I create on the fly after receiving the data from the API call.
 
 ![2020.09.16-altitude](./img/2020.09.16-altitude.png)
+
+#### September 18, 2020
+Finished product!
+
+Map on load
+![2020.09.18-points](./img/2020.09.18-points.png)
+
+After "Altitude" button is pressed
+![2020.09.18-altitude](./img/2020.09.18-altitude.png)
+
+Pushing this to https://mannylopez.github.io/flightTracker/

@@ -126,8 +126,6 @@ async function createPolygonGeoJSON() {
   return geojson;
 }
 
-
-
 async function addMapLayer(){
   await map.on('load', async function() {
 
@@ -170,12 +168,12 @@ async function addMapLayer(){
       let coordinates = e.features[0].geometry.coordinates.slice();
 
       let description = `<b>Flight ${e.features[0].properties.callsign}</b>
-        </br>
-        Velocity: ${Math.round(e.features[0].properties.velocity * 2.2369363)} mph
-        </br>
-        Altitude: ${Math.round(e.features[0].properties.geo_altitude)} meters
-        </br>
-        <a href="https://flightaware.com/live/flight/${e.features[0].properties.callsign}" target="_blank">View flight path on FlightAware</a>`
+      </br>
+      Velocity: ${Math.round(e.features[0].properties.velocity * 2.2369363)} mph
+      </br>
+      Altitude: ${Math.round(e.features[0].properties.geo_altitude)} meters
+      </br>
+      <a href="https://flightaware.com/live/flight/${e.features[0].properties.callsign}" target="_blank">View flight path on FlightAware</a>`
 
       // Ensure that if the map is zoomed out such that multiple
       // copies of the feature are visible, the popup appears
@@ -185,9 +183,9 @@ async function addMapLayer(){
       }
 
       new mapboxgl.Popup({closeButton: false})
-        .setLngLat(coordinates)
-        .setHTML(description)
-        .addTo(map);
+      .setLngLat(coordinates)
+      .setHTML(description)
+      .addTo(map);
     });
 
     map.on('mouseenter', 'points', () => {
@@ -202,32 +200,14 @@ async function addMapLayer(){
 
 document.getElementById('altitude').addEventListener('click', () => {
   map.setLayoutProperty('extrusion', 'visibility', 'visible')
-    .setLayoutProperty('points', 'visibility', 'none')
-    .setPitch(43);
+  .setLayoutProperty('points', 'visibility', 'none')
+  .setPitch(43);
 })
 
 document.getElementById('points').addEventListener('click', () => {
   map.setLayoutProperty('extrusion', 'visibility', 'none')
-    .setLayoutProperty('points', 'visibility', 'visible')
-    .setPitch(0);
+  .setLayoutProperty('points', 'visibility', 'visible')
+  .setPitch(0);
 })
 
 addMapLayer();
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
