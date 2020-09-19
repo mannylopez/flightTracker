@@ -1,5 +1,6 @@
 <style>
   body {
+    height: 100%
     margin: 0;
     padding: 0;
   }
@@ -38,6 +39,6 @@
     font-size: 15px;
     text-align: center;
     color: #000000;
-    background: #ffd5e5;
+    background: #aed6f1;
   }
 </style>
